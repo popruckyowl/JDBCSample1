@@ -45,10 +45,21 @@ public class LoginlistServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost/sample", "app", "app"); 
+                PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost/sample", "app", "app");
+            // Setting the driver   **可放入try直接判斷
+//            Connection con = DriverManager.getConnection("jdbc:derby://localhost/sample", "app", "app");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from login");
+            
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String password = rs.getString("password");
+                
+                out.println(id + ":" + password + "<br/>");
+            }
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
