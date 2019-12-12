@@ -5,13 +5,16 @@
  */
 package ws;
 
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
 import test.LoginServlet;
 import test.LoginlistServlet;
 
@@ -44,9 +48,22 @@ public class wsAddLoginServlet extends HttpServlet {
         resp.setContentType("application/json");
         try (Connection con = DriverManager.getConnection("jdbc:derby://localhost/sample", "app", "app"); 
                 PrintWriter out = resp.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String id = req.getParameter("id");
-            String password = req.getParameter("password");
+            // 傳輸表單到body(使用map)，而不是網址列的string形式
+           /* {
+                "id":"id1",
+                "password"="password1"
+              } */
+            InputStream input = req.getInputStream();
+            String json = IOUtils.toString(input, "utf-8");
+            Gson gson = new Gson();
+            Map map = gson.fromJson(json, Map.class);
+            String id = (String) map.get("id");
+            String password = (String) map.get("password");
+            
+            // 用網址列參數
+            /* ?id=id1 & password=password1 */
+//            String id = req.getParameter("id");
+//            String password = req.getParameter("password");
             PreparedStatement pstmt = con.prepareStatement("insert into LOGIN (id, password) values (?, ?)");
             pstmt.setString(1, id);
             pstmt.setString(2, password);
@@ -76,6 +93,25 @@ public class wsAddLoginServlet extends HttpServlet {
         }
     }
     
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost/sample", "app", "app"); 
+                PrintWriter out = resp.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            String id = req.getParameter("id");
+            
+            PreparedStatement pstmt = con.prepareStatement("delete from LOGIN where id=?");
+            pstmt.setString(1, id);
+            int ret = pstmt.executeUpdate();
+            out.println(ret);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginlistServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
     
     
     
@@ -93,4 +129,4 @@ public class wsAddLoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         }
-    }
+}
