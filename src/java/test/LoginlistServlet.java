@@ -25,13 +25,15 @@ import java.sql.*;
 public class LoginlistServlet extends HttpServlet {
     
     // Load driver once
-    static {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(LoginlistServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
+//    static {
+//        try {
+//            Class.forName("org.apache.derby.jdbc.ClientDriver");
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(LoginlistServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    // Change to NewServletListener.java -> Listener
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

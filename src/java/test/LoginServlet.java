@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.sql.*;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,13 +26,14 @@ import java.sql.*;
 public class LoginServlet extends HttpServlet {
     
     // Load driver once
-    static {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    static {
+//        try {
+//            Class.forName("org.apache.derby.jdbc.ClientDriver");
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    // Change to NewServletListener.java -> Listener
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,6 +57,9 @@ public class LoginServlet extends HttpServlet {
            ResultSet rs = stmt.executeQuery("select * from LOGIN where id='"+id+"' and password='"+password+"'");
            if (rs.next()) {
                out.println("login success");
+               HttpSession session = request.getSession();
+               session.setAttribute("id", id);
+               response.sendRedirect("list.jsp");
            } else {
                out.println("login fail");
            }

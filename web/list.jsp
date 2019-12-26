@@ -13,9 +13,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <a href="add.html"><button>ADD</buttin></a><br/>
+        <a href="logout.jsp">LOGOUT</a><br/>
         <table border="1">
             <%
-              Class.forName("org.apache.derby.jdbc.ClientDriver");
+//              Class.forName("org.apache.derby.jdbc.ClientDriver");
+            // Change to NewServletListener.java -> Listener
               Connection con = DriverManager.getConnection("jdbc:derby://localhost/sample", "app", "app");
               Statement stmt = con.createStatement();
               ResultSet rs = stmt.executeQuery("select * from LOGIN");

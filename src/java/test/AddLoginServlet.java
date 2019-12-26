@@ -25,13 +25,14 @@ import java.sql.*;
 public class AddLoginServlet extends HttpServlet {
     
     // Load driver once
-    static {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    static {
+//        try {
+//            Class.forName("org.apache.derby.jdbc.ClientDriver");
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(AddLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    // Change to NewServletListener.java -> Listener
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,6 +59,7 @@ public class AddLoginServlet extends HttpServlet {
             } else {
                 out.println("insert fail");
             }
+            response.sendRedirect("index.html");    //最優先顯示，其他print失效
         } catch (SQLException ex) {
             Logger.getLogger(AddLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
