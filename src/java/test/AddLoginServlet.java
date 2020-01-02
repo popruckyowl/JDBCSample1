@@ -59,7 +59,7 @@ public class AddLoginServlet extends HttpServlet {
             } else {
                 out.println("insert fail");
             }
-            response.sendRedirect("index.html");    //最優先顯示，其他print失效
+            response.sendRedirect("private/list.jsp");    //最優先顯示，其他print失效
         } catch (SQLException ex) {
             Logger.getLogger(AddLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

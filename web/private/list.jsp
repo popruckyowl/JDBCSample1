@@ -14,7 +14,7 @@
     </head>
     <body>
         <a href="add.html"><button>ADD</buttin></a><br/>
-        <a href="logout.jsp">LOGOUT</a><br/>
+        <a href="../logout.jsp">LOGOUT</a><br/>
         <table border="1">
             <%
 //              Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -27,7 +27,7 @@
                   out.println("<td>" + rs.getString("ID") + "</td>");
                   out.println("<td>" + rs.getString("PASSWORD") + "</td>");
                   out.println("<td>");
-                  out.println("<a href='delete?id="+rs.getString("ID")+"'> DELETE </a>");
+                  out.println("<a href='../delete?id="+rs.getString("ID")+"'> DELETE </a>");
                   out.println("</td>");
                   out.println("</tr>");
               }

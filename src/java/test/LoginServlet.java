@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
                out.println("login success");
                HttpSession session = request.getSession();
                session.setAttribute("id", id);
-               response.sendRedirect("list.jsp");
+               response.sendRedirect("private/list.jsp");
            } else {
                out.println("login fail");
            }

@@ -16,16 +16,14 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author user
  */
-@WebFilter(filterName = "NewFilter", urlPatterns = {"/private/*"})
-public class NewFilter implements Filter {
+@WebFilter(filterName = "NewFilter1", urlPatterns = {"/private/*"})
+public class NewFilter1 implements Filter {
     
     private static final boolean debug = true;
 
@@ -34,13 +32,13 @@ public class NewFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public NewFilter() {
+    public NewFilter1() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("NewFilter:DoBeforeProcessing");
+            log("NewFilter1:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -68,7 +66,7 @@ public class NewFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("NewFilter:DoAfterProcessing");
+            log("NewFilter1:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -104,22 +102,29 @@ public class NewFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("NewFilter:doFilter()");
+            log("NewFilter1:doFilter()");
         }
         
         doBeforeProcessing(request, response);
-        
+        ServletResponseWrapper wrapper = new ServletResponseWrapper((HttpServletResponse) response);
+
         Throwable problem = null;
         try {
-//            chain.doFilter(request, response);
-            HttpServletResponse httpServletRespone = (HttpServletResponse) response;
-            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-            HttpSession session = httpServletRequest.getSession();
-            if (session.getAttribute("id") != null) {
-                chain.doFilter(request, response);
-            } else {
-                httpServletRespone.sendRedirect("index.html");
-            }
+            //擷取輸出
+            chain.doFilter(request, wrapper);
+            //重新顯示(可加其他操作)
+            String str = wrapper.getBuffString();
+            PrintWriter out = ((HttpServletResponse) response).getWriter();
+//            out.println("This is a fake site <br/>" + str);
+//            ((HttpServletResponse) response).setContentType("text/html;charset=UTF-8");
+            out.println("此網站為假的 <br/>");
+            //加入頁尾
+            int index = str.indexOf("</body>");
+            String p1 = str.substring(0, index);
+            String p2 = "<div style='position:absolute; bottom:0px'> TEL: 2882-5252 EMAIL: trytry@com.tw </div>";
+            String p3 = str.substring(index);
+            out.println(p1 + p2 + p3);
+            
             
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
@@ -173,7 +178,7 @@ public class NewFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("NewFilter:Initializing filter");
+                log("NewFilter1:Initializing filter");
             }
         }
     }
@@ -184,9 +189,9 @@ public class NewFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("NewFilter()");
+            return ("NewFilter1()");
         }
-        StringBuffer sb = new StringBuffer("NewFilter(");
+        StringBuffer sb = new StringBuffer("NewFilter1(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

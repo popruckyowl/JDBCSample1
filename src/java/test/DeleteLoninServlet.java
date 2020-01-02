@@ -46,7 +46,7 @@ public class DeleteLoninServlet extends HttpServlet {
             String id = request.getParameter("id");
             stmt.executeUpdate("delete from LOGIN where ID='"+id+"'");
             
-            response.sendRedirect("list.jsp");
+            response.sendRedirect("private/list.jsp");
     }   catch (SQLException ex) {
             Logger.getLogger(DeleteLoninServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
